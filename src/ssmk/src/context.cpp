@@ -1,3 +1,4 @@
+#include <iostream>
 #include <ssmk/context.hpp>
 
 #include <ssmk/sprite.hpp>
@@ -43,11 +44,10 @@ const std::unordered_map<std::string, context::output::png_info::interlacing>
 context::intermediate::~intermediate() {
 	for (auto ptr: sprites)
 		delete ptr;
-	sprites.clear();
 	if (rows != nullptr)
 		for (std::size_t i = 0; i < height; i++)
-			delete[] ((png_bytepp)rows)[i];
-	delete[] (png_bytepp)rows; 
+			delete[] rows[i];
+	delete[] rows; 
 	std::free(chunk);
 	png_destroy_write_struct(&png, &info);
 }
