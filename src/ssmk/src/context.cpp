@@ -42,25 +42,26 @@ const std::unordered_map<std::string, context::output::png_info::interlacing>
 };
 
 context::intermediate::~intermediate() {
-	for (auto ptr: sprites)
-		delete ptr;
-	if (rows != nullptr)
-		for (std::size_t i = 0; i < height; i++)
-			delete[] rows[i];
-	delete[] rows; 
-	delete [] chunk;
-	png_destroy_write_struct(&png, &info);
+	//  TODO: fix memory dealocation
+	// for (auto ptr: sprites)
+	// 	delete ptr;
+	// if (rows != nullptr)
+	// 	for (std::size_t i = 0; i < height; i++)
+	// 		delete[] rows[i];
+	// delete[] rows; 
+	// delete [] chunk; // deleted on png_unknown_chunk deletion
+	// png_destroy_write_struct(&png, &info);
 }
 
-std::ostream& operator<<(std::ostream& os, const context& c) {
 #define S(PROP) os << #PROP ": " << c.PROP << std::endl;
 #define SE(PROP) os << #PROP ": " << static_cast<std::underlying_type<decltype(c.PROP)>::type>(c.PROP) << std::endl;
 #define SV(PROP) \
-	os << #PROP ": \n"; \
-	for (const auto& r : c.PROP) { \
-		os << "  " << r << '\n'; \
-	}
+os << #PROP ": \n"; \
+for (const auto& r : c.PROP) { \
+	os << "  " << r << '\n'; \
+}
 
+std::ostream& operator<<(std::ostream& os, const context& c) {
 	SV(in.files);
 
 	S(conf.directory);
@@ -86,10 +87,10 @@ std::ostream& operator<<(std::ostream& os, const context& c) {
 	S(im.height);
 
 	return os;
-
-	#undef S
-	#undef SV
-	#undef SE
 }
+
+#undef S
+#undef SV
+#undef SE
 
 }

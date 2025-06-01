@@ -43,6 +43,7 @@ void ssmk::write_png() {
 	delete (png_color_16p)context.im.background;
 	context.im.background = nullptr;
 	png_destroy_write_struct(&context.im.png, &context.im.info);
+	context.im.png = nullptr; context.im.info = nullptr;
 	std::fclose(ofile);
 
 	if (m_png_written_callback) 

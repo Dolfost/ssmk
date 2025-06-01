@@ -33,16 +33,13 @@ void ssmk::build_png_chunk() {
 		m_context.im.chunk_size += paths.back().length() + 1 + 4*sizeof(std::uint32_t);
 	}
 
-	m_context.im.chunk = new std::uint8_t[m_context.im.chunk_size];
+	m_context.im.chunk = (std::uint8_t*)std::malloc(m_context.im.chunk_size);
 
 	const bool call = (bool)m_png_chunk_entry_written_callback;
 	size_type at = sizeof(std::uint32_t);
 	std::uint32_t x, y, w, h, slen, n = m_context.im.sprites.size();
-	std::uint8_t* const chunk = static_cast<std::uint8_t*>(m_context.im.chunk);
-	std::memcpy( // n
-		chunk + 0, 
-		&n, sizeof(std::uint32_t)
-	);
+	std::uint8_t* chunk = m_context.im.chunk;
+	*(std::uint32_t*)chunk = htonl(n);
 	for (std::vector<std::string>::size_type i = 0; i < paths.size(); i++) {
 		const sprite& s = *static_cast<sprite*>(m_context.im.sprites[i]);
 
@@ -58,9 +55,6 @@ void ssmk::build_png_chunk() {
 
 		slen = paths[i].length() + 1;
 
-		std::memcpy(chunk + at, &slen, sizeof(std::uint32_t)); // slen
-		at += sizeof(std::uint32_t);
-
 		std::memcpy(chunk + at, paths[i].c_str(), slen);
 		at += slen;
 		
@@ -70,12 +64,7 @@ void ssmk::build_png_chunk() {
 
 	// I guess that libpng frees it by itself
 	png_unknown_chunkp png_chunk = (png_unknown_chunkp)std::malloc(sizeof(png_unknown_chunk));
-	std::memcpy(
-		png_chunk->name,
-		chunk_name,
-		5
-	);
-
+	std::memcpy(png_chunk->name, chunk_name, 5);
 	png_chunk->data = (png_bytep)chunk;
 	png_chunk->size = m_context.im.chunk_size;
 	png_chunk->location = PNG_HAVE_PLTE; // write chunk before IDAT
