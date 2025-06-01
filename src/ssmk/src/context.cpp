@@ -48,48 +48,48 @@ context::intermediate::~intermediate() {
 		for (std::size_t i = 0; i < height; i++)
 			delete[] rows[i];
 	delete[] rows; 
-	std::free(chunk);
+	delete [] chunk;
 	png_destroy_write_struct(&png, &info);
 }
 
-	std::ostream& operator<<(std::ostream& os, const context& c) {
-		#define S(PROP) os << #PROP ": " << c.PROP << std::endl;
-		#define SE(PROP) os << #PROP ": " << static_cast<std::underlying_type<decltype(c.PROP)>::type>(c.PROP) << std::endl;
-		#define SV(PROP) \
-		os << #PROP ": \n"; \
-		for (const auto& r : c.PROP) { \
-			os << "  " << r << '\n'; \
-		}
-
-		SV(in.files);
-
-		S(conf.directory);
-		S(out.file);
-
-		SE(out.pack.alg);
-		SE(out.pack.order);
-		SE(out.pack.metric);
-		S(out.pack.k);
-		SE(out.png.inter);
-		S(out.png.opaque);
-		SV(out.png.background);
-
-		S(conf.file);
-
-		os << "im.sprites" ": \n";
-		for (const auto& r : c.im.sprites) {
-			os << "  " << *static_cast<sprite*>(r) << '\n';
-		}
-		S(im.depth);
-		S(im.color_present);
-		S(im.width);
-		S(im.height);
-
-		return os;
-
-		#undef S
-		#undef SV
-		#undef SE
+std::ostream& operator<<(std::ostream& os, const context& c) {
+#define S(PROP) os << #PROP ": " << c.PROP << std::endl;
+#define SE(PROP) os << #PROP ": " << static_cast<std::underlying_type<decltype(c.PROP)>::type>(c.PROP) << std::endl;
+#define SV(PROP) \
+	os << #PROP ": \n"; \
+	for (const auto& r : c.PROP) { \
+		os << "  " << r << '\n'; \
 	}
+
+	SV(in.files);
+
+	S(conf.directory);
+	S(out.file);
+
+	SE(out.pack.alg);
+	SE(out.pack.order);
+	SE(out.pack.metric);
+	S(out.pack.k);
+	SE(out.png.inter);
+	S(out.png.opaque);
+	SV(out.png.background);
+
+	S(conf.file);
+
+	os << "im.sprites" ": \n";
+	for (const auto& r : c.im.sprites) {
+		os << "  " << *static_cast<sprite*>(r) << '\n';
+	}
+	S(im.depth);
+	S(im.color_present);
+	S(im.width);
+	S(im.height);
+
+	return os;
+
+	#undef S
+	#undef SV
+	#undef SE
+}
 
 }

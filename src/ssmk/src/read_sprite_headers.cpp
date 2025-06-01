@@ -12,9 +12,9 @@
 namespace sm {
 
 void ssmk::read_sprite_headers() {
-	static const std::size_t sigLen = 8;
+	static const size_type sigLen = 8;
 	png_byte signature[sigLen];
-	std::size_t spriteCount = context.im.sprites.size();
+	size_type spriteCount = context.im.sprites.size();
 
 	std::FILE* file = nullptr;
 	for (std::size_t i = 0; i < spriteCount; i++) {

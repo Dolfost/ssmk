@@ -92,7 +92,7 @@ struct context {
 		png_bytepp rows = nullptr; ///< Output buffer
 		int color = 0; ///< Output color mode
 		int depth = 0; ///< Output color depth
-		void* chunk = nullptr; ///< SSMK specific png chunk
+		std::uint8_t* chunk = nullptr; ///< SSMK specific png chunk
 		std::uint32_t chunk_size = 0;
 		~intermediate();
 	} im;

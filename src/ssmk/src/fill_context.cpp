@@ -189,7 +189,7 @@ void ssmk::fill_context(sm::context& context) {
 			});
 		}
 		std::optional<int> compression = (*pngTable)["compression"].value<int>();
-		if (compression)  {
+		if (compression) {
 			if (*compression < 0 or *compression > 9)
 				SM_EX_THROW(
 					config_unexpected_field_value, 

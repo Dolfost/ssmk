@@ -43,7 +43,7 @@ void ssmk::make_output_png() {
 	png_set_IHDR(
 		context.im.png, context.im.info, context.im.width, context.im.height,
 		context.im.depth, context.im.color, interlacing,
-		PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT
+		PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT //  TODO: add filter setting to toml config
 	);
 
 	context.im.background = new png_color_16;
@@ -53,19 +53,19 @@ void ssmk::make_output_png() {
 			png_could_not_allocate_background_color, 
 			context.out.file
 		);
-	int max = 1 << context.im.depth; // max pixel component value
-	if (context.im.color & PNG_COLOR_MASK_COLOR) {
+	const int max = 1 << context.im.depth; // max pixel component value
+	if (context.im.color & PNG_COLOR_MASK_COLOR) { // if result is color image
 		context.im.background->red   = max * context.out.png.background[0];
 		context.im.background->green = max * context.out.png.background[1];
 		context.im.background->blue  = max * context.out.png.background[2];
-	} else {
+	} else { // if output will be grayscale, convert color to grayscale
 		context.im.background->gray = (
 			6968  * max * context.out.png.background[0] + 
 			23434 * max * context.out.png.background[1] + 
 			2366  * max * context.out.png.background[2]
 		) / 32768;
 	}
-	if (not (context.im.color & PNG_COLOR_MASK_ALPHA))
+	if (not (context.im.color & PNG_COLOR_MASK_ALPHA)) // set background color only if output is transparent
 		png_set_bKGD(
 			context.im.png, context.im.info,
 			context.im.background
@@ -92,13 +92,14 @@ void ssmk::make_output_png() {
 
 	// allocate result buffer
 	context.im.rows = new png_bytep[context.im.height];
-	png_bytepp rows = (png_bytepp&)context.im.rows;
+	png_bytepp& rows = context.im.rows;
 	if (not rows) {
 		png_destroy_write_struct(&context.im.png, &context.im.info);
 		SM_EX_THROW(png_error, png_could_not_allocate_output_rows, context.out.file);
 	}
+	const auto row_size = png_get_rowbytes(context.im.png, context.im.info);
 	for (std::size_t i = 0; i < context.im.height; i++) {
-		rows[i] = new png_byte[png_get_rowbytes(context.im.png, context.im.info)];
+		rows[i] = new png_byte[row_size];
 		
 		if (not rows[i]) {
 			png_destroy_write_struct(&context.im.png, &context.im.info);

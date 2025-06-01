@@ -126,7 +126,7 @@ public:
 	};
 	class sheet: public std::map<std::string, sheet_entry> {
 	protected:
-		std::size_t m_width, m_height;
+		size_type m_width, m_height;
 		int m_png_color, m_depth;
 		bool m_color_present, m_alpha_present; 
 		png_bytep* m_data;
