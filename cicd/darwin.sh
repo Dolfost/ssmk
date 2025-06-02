@@ -14,5 +14,5 @@ brew install --formula cmake git libpng
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export REPO="$SCRIPT_DIR/.."
-
+export CONFIGURATION_OPTIONS="-DCMAKE_PREFIX_PATH=/opt/homebrew"
 cmake -P "$SCRIPT_DIR/cmake/$1.cmake"
