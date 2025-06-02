@@ -10,9 +10,11 @@ fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # installing dependencies
-brew install --formula cmake git libpng
+brew install --formula cmake git
+brew reinstall libpng
+brew upgrade
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 export REPO="$SCRIPT_DIR/.."
-export CONFIGURATION_OPTIONS="-DCMAKE_PREFIX_PATH=/opt/homebrew"
+export CONFIGURATION_OPTIONS='-DCMAKE_PREFIX_PATH=/opt/homebrew -DPNG_PNG_INCLUDE_DIR=/opt/homebrew/include -DPNG_LIBRARY=/opt/homebrew/lib/libpng.dylib'
 cmake -P "$SCRIPT_DIR/cmake/$1.cmake"

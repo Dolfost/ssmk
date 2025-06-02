@@ -6,26 +6,20 @@ REM install chocolatey
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
 
 REM figure out dependencies
-SET "chocodeps=libpng zlib"
-SET "needdoxygen=0"
-IF "%1" == "docs" SET "needdoxygen=1"
-IF "%1" == "pack" SET "needdoxygen=1"
-IF %needdoxygen% EQU 1 SET "chocodeps=doxygen.install graphviz"
+choco install msys2 
 
-SET "needmingw=0"
-IF "%1" == "pack" SET "needmingw=1"
-IF "%1" == "test" SET "needmingw=1"
-IF %needmingw% EQU 1 SET "chocodeps=%chocodeps% mingw"
+ECHO UCRT_1
 
-REM install dependencies
-IF "%chocodeps%" == "" (
-	ECHO "No packages specified to install."
-) ELSE (
-	choco install %chocodeps%
-)
+set CHERE_INVOKING=yes
+SET MSYSTEM=UCRT64
+
+C:\tools\msys64\usr\bin\bash -lc "pacman -Syu --noconfirm"
+C:\tools\msys64\usr\bin\bash -lc "pacman -S --noconfirm mingw-w64-ucrt-x86_64-libpng mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-gcc cmake git make"
+
+ECHO UCRT_2
 
 SET "SCRIPT_DIR=%~dp0"
 SET "REPO=%SCRIPT_DIR%.."
-SET CONFIGURATION_OPTIONS=-G "MinGW Makefiles"
+REM SET CONFIGURATION_OPTIONS=-G "Unix Makefiles"
 
-cmake -P "%SCRIPT_DIR%cmake\%1.cmake"
+C:\tools\msys64\usr\bin\bash -lc 'cmake -P "%SCRIPT_DIR%cmake\%1.cmake"'
