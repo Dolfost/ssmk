@@ -1,6 +1,8 @@
 #ifndef _SSMK_SSMK_CONTEXT_HPP_
 #define _SSMK_SSMK_CONTEXT_HPP_
 
+#include <png.h>
+
 #include <vector>
 #include <array>
 #include <iosfwd>
@@ -15,17 +17,6 @@ template<typename T>
 class Box2D;
 
 }
-
-typedef struct png_struct_def png_struct;
-typedef png_struct* png_structp;
-typedef struct png_info_def png_info;
-typedef png_info* png_infop;
-typedef struct png_color_16_struct png_color_16;
-typedef png_color_16_struct* png_color_16p;
-typedef unsigned char png_byte;
-typedef png_byte** png_bytepp;
-typedef struct png_unknown_chunk_t png_unknown_chunk;
-typedef png_unknown_chunk* png_unknown_chunkp;
 
 namespace sm {
 

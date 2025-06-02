@@ -3,6 +3,8 @@
 
 #include <ssmk/context.hpp>
 
+#include <png.h>
+
 #include <functional>
 #include <cstddef>
 #include <type_traits>
@@ -22,15 +24,6 @@
 		std::function<void(const context_type& __VA_OPT__(,) __VA_ARGS__)>& NAME##_callback() { \
 			return m_##NAME##_callback; \
 		}
-
-typedef struct png_struct_def png_struct;
-typedef png_struct* png_structp;
-typedef struct png_info_def png_info;
-typedef png_info* png_infop;
-typedef struct png_color_16_struct png_color_16;
-typedef png_color_16_struct* png_color_16p;
-typedef unsigned char png_byte;
-typedef png_byte* png_bytep;
 
 namespace sm {
 
