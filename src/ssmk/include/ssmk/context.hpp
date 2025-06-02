@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <cstdint>
 
-namespace ca::optim {
+namespace ca::opt {
 
 template<typename T> 
 class Box2D;
@@ -78,7 +78,7 @@ struct context {
 	} out;
 
 	struct intermediate {
-		std::vector<ca::optim::Box2D<std::size_t>*> sprites;
+		std::vector<ca::opt::Box2D<std::size_t>*> sprites;
 
 		std::size_t color_present   = 0;
 		std::size_t alpha_present   = 0;

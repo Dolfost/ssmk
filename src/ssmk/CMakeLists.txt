@@ -2,7 +2,7 @@ include(FetchContent)
 FetchContent_Declare(
     calgo QUIET
     GIT_REPOSITORY https://github.com/Dolfost/calgo.git
-    GIT_TAG v3.3.0.0
+    GIT_TAG v4.1.5.4
 )
 FetchContent_MakeAvailable(calgo)
 FetchContent_Declare(
@@ -61,7 +61,7 @@ target_sources(sm_ssmk
 target_link_libraries(sm_ssmk
 	tomlplusplus::tomlplusplus 
 	PNG::PNG
-	ca::optim
+	ca::optimization
 )
 
 add_subdirectory(tests)

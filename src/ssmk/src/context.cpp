@@ -3,7 +3,7 @@
 
 #include <ssmk/sprite.hpp>
 
-#include <calgo/optim/packing2D.hpp>
+#include <calgo/opt/packing2D.hpp>
 
 #include <png.h>
 

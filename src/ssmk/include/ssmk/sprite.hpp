@@ -1,7 +1,7 @@
 #ifndef _SSMK_SSMK_SPRITE_HPP_
 #define _SSMK_SSMK_SPRITE_HPP_
 
-#include <calgo/optim/packing2D.hpp>
+#include <calgo/opt/packing2D.hpp>
 
 #include <filesystem>
 #include <iosfwd>
@@ -13,7 +13,7 @@ typedef png_info* png_infop;
 
 namespace sm {
 
-class sprite: public ca::optim::Box2D<std::size_t> {
+class sprite: public ca::opt::Box2D<std::size_t> {
 public:
 	struct png_info {
 		png_structp image = nullptr;
@@ -22,7 +22,7 @@ public:
 		~png_info();
 	};
 public:
-	using ca::optim::Box2D<std::size_t>::Box2D;
+	using ca::opt::Box2D<std::size_t>::Box2D;
 
 	 void set_path(const std::filesystem::path& path) {
 		m_path = path;
@@ -35,7 +35,7 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const sprite& s) {
-		return os << static_cast<ca::optim::Box2D<std::size_t>>(s)
+		return os << static_cast<ca::opt::Box2D<std::size_t>>(s)
 		<< " in " << s.m_path;
 	};
 private:

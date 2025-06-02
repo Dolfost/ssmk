@@ -7,6 +7,9 @@ int main(int argc, char** argv) {
 	try {
 		s.read_config(TESTPATH "/projects/no_sprites" );
 		s.find_files();
+	} catch (sm::ex::config_field_error& ex) {
+		std::cout << ex.what() << ": " << ex.description() << ": " << ex.path() << ": " << ex.field() << std::endl;
+		return ex.code() == sm::ex::code::no_sprites_found ? sm::ex::code::good : sm::ex::code::bad;
 	} catch (sm::ex::error& ex) {
 		std::cout << ex.what() << ": " << ex.description() << std::endl;
 		return ex.code() == sm::ex::code::no_sprites_found ? sm::ex::code::good : sm::ex::code::bad;

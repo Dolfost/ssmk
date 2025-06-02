@@ -1,7 +1,7 @@
 #include <ssmk/ssmk.hpp>
 #include <ssmk/exceptions.hpp>
 
-#include <calgo/optim/packing2D.hpp>
+#include <calgo/opt/packing2D.hpp>
 
 namespace sm {
 
@@ -21,7 +21,7 @@ void ssmk::pack_sprites() {
 		case Order::none: ;
 	}
 
-	std::function<std::size_t(const ca::optim::Box2D<std::size_t>* box)> metric;
+	std::function<std::size_t(const ca::opt::Box2D<std::size_t>* box)> metric;
 	if (order) 
 		switch (context.out.pack.metric) {
 			case Metric::perimeter:
@@ -46,16 +46,16 @@ void ssmk::pack_sprites() {
 				SM_EX_THROW(error, no_packing_metric);
 		}
 
-	ca::optim::Packing2D<std::size_t>* packing;
+	ca::opt::Packing2D<std::size_t>* packing;
 	switch (context.out.pack.alg) {
 		case Algorithm::tree_fit: {
-			packing = new ca::optim::TreeFit2D<std::size_t>; 
+			packing = new ca::opt::TreeFit2D<std::size_t>; 
 			break; }
 		case Algorithm::first_fit: {
-			packing = new ca::optim::FirstFit2D<std::size_t>; 
+			packing = new ca::opt::FirstFit2D<std::size_t>; 
 			break; }
 		case Algorithm::next_fit: {
-			auto p = new ca::optim::NextFit2D<std::size_t>; 
+			auto p = new ca::opt::NextFit2D<std::size_t>; 
 			p->setK(context.out.pack.k);
 			packing = p;
 			break; }
@@ -74,7 +74,7 @@ void ssmk::pack_sprites() {
 	if (m_image_packed_callback)
 		packing->boxPackedCallback(
 			[this](
-				const std::vector<ca::optim::Box2D<std::size_t>*>& boxes, 
+				const std::vector<ca::opt::Box2D<std::size_t>*>& boxes, 
 				std::size_t index) {
 				this->m_image_packed_callback(m_context, index);
 			}
