@@ -6,12 +6,16 @@
 
 int main(int argc, char** argv) {
 	sm::ssmk s;
+	// be aware that [](auto context, auto n) { ... } will lead to [](sm::context
+	// context, auto n) and it will be copied by value and destroyed when lambdas
+	// scope is reached
 	s.set_png_chunk_entry_written_callback(
-		[](auto context, auto n) {
+		[](const auto& context, auto n) {
 			sm::sprite& sprite = *static_cast<sm::sprite*>(context.im.sprites[n]);
 			std::cout << sprite << "\n";
 		}
 	);
+
 	try {
 		s.make_sheet(TESTPATH "/projects/ex1");
 	} catch (sm::ex::png_error& ex) {

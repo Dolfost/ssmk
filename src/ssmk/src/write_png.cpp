@@ -37,8 +37,8 @@ void ssmk::write_png() {
 
 	// cleanup
 	for (std::size_t i = 0; i < context.im.height; i++)
-		delete context.im.rows[i];
-	delete context.im.rows; 
+		delete[] context.im.rows[i];
+	delete[] context.im.rows; 
 	context.im.rows = nullptr;
 	delete (png_color_16p)context.im.background;
 	context.im.background = nullptr;

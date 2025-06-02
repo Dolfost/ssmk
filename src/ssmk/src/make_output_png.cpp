@@ -2,6 +2,13 @@
 #include <ssmk/exceptions.hpp>
 #include <ssmk/version.hpp>
 
+#ifdef CALGO_HAVE_VALGRIND
+#include <valgrind/memcheck.h>
+#else 
+#define VALGRIND_MAKE_MEM_DEFINED(addr, len) ((void)0)
+#define VALGRIND_MAKE_MEM_UNDEFINED(addr, len) ((void)0)
+#endif
+
 #include <png.h>
 
 namespace sm {
@@ -100,6 +107,7 @@ void ssmk::make_output_png() {
 	const auto row_size = png_get_rowbytes(context.im.png, context.im.info);
 	for (std::size_t i = 0; i < context.im.height; i++) {
 		rows[i] = new png_byte[row_size];
+		VALGRIND_MAKE_MEM_DEFINED(rows[i], row_size);
 		
 		if (not rows[i]) {
 			png_destroy_write_struct(&context.im.png, &context.im.info);

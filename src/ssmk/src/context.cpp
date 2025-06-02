@@ -43,14 +43,15 @@ const std::unordered_map<std::string, context::output::png_info::interlacing>
 
 context::intermediate::~intermediate() {
 	//  TODO: fix memory dealocation
-	// for (auto ptr: sprites)
-	// 	delete ptr;
-	// if (rows != nullptr)
-	// 	for (std::size_t i = 0; i < height; i++)
-	// 		delete[] rows[i];
-	// delete[] rows; 
-	// delete [] chunk; // deleted on png_unknown_chunk deletion
-	// png_destroy_write_struct(&png, &info);
+	for (auto ptr: sprites)
+		delete static_cast<sprite*>(ptr);
+	if (rows != nullptr)
+		for (std::size_t i = 0; i < height; i++)
+			delete[] rows[i];
+	delete[] rows; 
+	delete[] chunk;
+	delete png_chunk;
+	png_destroy_write_struct(&png, &info);
 }
 
 #define S(PROP) os << #PROP ": " << c.PROP << std::endl;

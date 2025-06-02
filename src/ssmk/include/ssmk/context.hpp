@@ -24,6 +24,8 @@ typedef struct png_color_16_struct png_color_16;
 typedef png_color_16_struct* png_color_16p;
 typedef unsigned char png_byte;
 typedef png_byte** png_bytepp;
+typedef struct png_unknown_chunk_t png_unknown_chunk;
+typedef png_unknown_chunk* png_unknown_chunkp;
 
 namespace sm {
 
@@ -93,6 +95,7 @@ struct context {
 		int color = 0; ///< Output color mode
 		int depth = 0; ///< Output color depth
 		std::uint8_t* chunk = nullptr; ///< SSMK specific png chunk
+		png_unknown_chunkp png_chunk = nullptr;
 		std::uint32_t chunk_size = 0;
 		~intermediate();
 	} im;

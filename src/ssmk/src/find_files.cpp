@@ -16,7 +16,7 @@ namespace sm {
 
 void ssmk::find_files() {
 	for (auto ptr: context.im.sprites) {
-		delete ptr;
+		delete static_cast<sprite*>(ptr);
 	}
 	context.im.sprites.clear();
 	for (const auto& in: context.in.files) {
