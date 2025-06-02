@@ -1,4 +1,6 @@
 include(FetchContent)
+
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5) # for CLI11
 FetchContent_Declare(
     cli11_proj QUIET
     GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
