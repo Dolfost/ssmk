@@ -22,4 +22,17 @@ foreach(T ${TESTS})
 	add_test(NAME ssmk_${TNAME}
 		COMMAND ssmk_${TNAME}
 	)
+
+	if(VALGRIND_EXECUTABLE)
+		set_tests_properties(ssmk_${TNAME} 
+			PROPERTIES FIXTURES_SETUP "ssmk_${TNAME}"
+		)
+		add_test(NAME ssmk_valgrind_${TNAME}
+			COMMAND valgrind --leak-check=full --track-origins=yes -s
+			--error-exitcode=1 $<TARGET_FILE:ssmk_${TNAME}>
+		)
+		set_tests_properties(ssmk_valgrind_${TNAME} 
+			PROPERTIES FIXTURES_REQUIRED "ssmk_${TNAME}"
+		)
+	endif()
 endforeach()

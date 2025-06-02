@@ -8,7 +8,7 @@ int main(int argc, char** argv) {
 	sm::ssmk s;
 	// be aware that [](auto context, auto n) { ... } will lead to [](sm::context
 	// context, auto n) and it will be copied by value and destroyed when lambdas
-	// scope is reached
+	// scope end is reached
 	s.set_png_chunk_entry_written_callback(
 		[](const auto& context, auto n) {
 			sm::sprite& sprite = *static_cast<sm::sprite*>(context.im.sprites[n]);
