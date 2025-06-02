@@ -9,8 +9,11 @@ int main(int argc, char** argv) {
 	} catch (sm::ex::config_unexpected_field_value& ex) {
 		std::cout << ex.path() <<  ": " << ex.what() 
 			<< ": " << ex.description() << ": " << ex.field() 
-			<< " = " << ex.value() << ", expected " << ex.expected();
+			<< " = " << ex.value() << ", expected " << ex.expected() << std::flush;
 		return sm::ex::code::good;
+	} catch (sm::ex::config_field_error& ex) {
+		std::cout << ex.path() <<  ": " << ex.what() 
+			<< ": " << ex.description() << ": " << ex.field() << std::endl;
 	}
 
 	std::cout << "General";
