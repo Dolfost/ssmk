@@ -1,4 +1,5 @@
 include(FetchContent)
+set(CALGO_QT NO)
 FetchContent_Declare(
     calgo QUIET
     GIT_REPOSITORY https://github.com/Dolfost/calgo.git
