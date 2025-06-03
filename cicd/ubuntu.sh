@@ -15,7 +15,6 @@ esac
 # installing dependencies
 sudo apt install $aptdeps
 
-SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-export REPO="$SCRIPT_DIR/.."
+export REPO="$(pwd)"
 
-cmake -P "$SCRIPT_DIR/cmake/$1.cmake"
+cmake -P "cicd/cmake/$1.cmake"
