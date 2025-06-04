@@ -1,6 +1,9 @@
 ECHO OFF
 
-IF [%1] == [] ECHO "No operation specified!" & EXIT 1
+IF [%1] == [] ( 
+	ECHO No operation specified!
+	EXIT /B 1
+)
 
 REM install chocolatey
 @"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
@@ -8,18 +11,17 @@ REM install chocolatey
 REM figure out dependencies
 choco install msys2 
 
-ECHO UCRT_1
 
-set CHERE_INVOKING=yes
-SET MSYSTEM=UCRT64
+REM set up env command
+SET "MSYS_ENV=C:\tools\msys64\usr\bin\env.exe MSYSTEM=UCRT64 CHERE_INVOKING=1 /usr/bin/bash -lc"
 
-C:\tools\msys64\usr\bin\bash -lc "pacman -Syu --noconfirm"
-C:\tools\msys64\usr\bin\bash -lc "pacman -S --noconfirm mingw-w64-ucrt-x86_64-libpng mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-gcc cmake git make"
+ECHO -cmd- installing tools
 
-ECHO UCRT_2
+%MSYS_ENV% "pacman -S --noconfirm mingw-w64-ucrt-x86_64-libpng mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-cmake git make"
 
-SET "SCRIPT_DIR=%~dp0"
-SET "REPO=%SCRIPT_DIR%.."
-REM SET CONFIGURATION_OPTIONS=-G "Unix Makefiles"
+ECHO -cmd- done installing tools
 
-C:\tools\msys64\usr\bin\bash -lc 'cmake -P "%SCRIPT_DIR%cmake\%1.cmake"'
+SET "REPO=%cd%"
+
+ECHO -cmd- running the cicd/cmake/%1%.cmake in msys
+%MSYS_ENV% "cmake -P cicd/cmake/%1%.cmake"
