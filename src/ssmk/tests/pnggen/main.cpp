@@ -1,10 +1,15 @@
 #include <cstdio>
+#include <cstring>
 #include <random>
 #include <iostream>
 
 #include <png.h>
 
 int main(int argc, char** argv) {
+	bool verbose = true;
+	if (argc >= 2 and not std::strcmp(argv[1], "--silent"))
+		verbose = false;
+
 	png_structp png;
 	png_infop info;
 
@@ -33,7 +38,8 @@ int main(int argc, char** argv) {
 			std::cerr << "failed to open: " << path << std::endl;
 			break;
 		}
-		std::cout << "writing to " << path << ": " << width << "x" << height << "px" << std::endl;
+		if (verbose)
+			std::cout << "writing to " << path << ": " << width << "x" << height << "px" << std::endl;
 		png_bytepp rows = new png_bytep[height];
 		for (int i = 0; i < height; i++) {
 			rows[i] = new png_byte[width*3];

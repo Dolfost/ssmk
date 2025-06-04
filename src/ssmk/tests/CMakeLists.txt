@@ -3,7 +3,7 @@ file(GLOB TESTS CONFIGURE_DEPENDS
 )
 
 add_subdirectory(pnggen)
-add_custom_target(generate_png ALL pnggen
+add_custom_target(generate_png ALL pnggen --silent
 	WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/projects/generated/png"
 )
 
