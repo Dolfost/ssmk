@@ -49,8 +49,6 @@ context::intermediate::~intermediate() {
 		for (std::size_t i = 0; i < height; i++)
 			delete[] rows[i];
 	delete[] rows; 
-	delete[] chunk;
-	delete png_chunk;
 	png_destroy_write_struct(&png, &info);
 }
 

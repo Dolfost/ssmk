@@ -77,6 +77,9 @@ struct context {
 		std::size_t alpha_present   = 0;
 		std::size_t palette_present = 0;
 		std::size_t tRNS_present    = 0;
+		static const std::size_t max_chunk_size = 80;
+		std::vector<std::vector<std::uint8_t>> chunks;
+		std::vector<std::size_t> chunks_entry_count;
 
 		std::size_t width, height; ///< Output dimentions
 		png_structp png = nullptr;  ///< Output png data structure
@@ -85,9 +88,8 @@ struct context {
 		png_bytepp rows = nullptr; ///< Output buffer
 		int color = 0; ///< Output color mode
 		int depth = 0; ///< Output color depth
-		std::uint8_t* chunk = nullptr; ///< SSMK specific png chunk
-		png_unknown_chunkp png_chunk = nullptr;
-		std::uint32_t chunk_size = 0;
+		std::vector<png_unknown_chunk> png_chunks;
+		std::uint32_t chunks_size = 0;
 		~intermediate();
 	} im;
 
