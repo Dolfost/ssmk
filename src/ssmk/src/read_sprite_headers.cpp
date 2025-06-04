@@ -22,7 +22,7 @@ void ssmk::read_sprite_headers() {
 		png_structp& png  = sprt->png().image;
 		png_infop&   info = sprt->png().info;
 
-		if (not (file = std::fopen(sprt->path().c_str(), "rb")))
+		if (not (file = std::fopen(sprt->path().string().c_str(), "rb")))
 			SM_EX_THROW(png_error, png_failed_to_open_for_reading, sprt->path());
 
 		std::memset(signature, 0, sigLen);

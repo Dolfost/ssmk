@@ -27,7 +27,7 @@ void ssmk::copy_sprites() {
 		png_infop&   info = sprt->png().info;
 		png_structp& png = sprt->png().image;
 
-		ifile = std::fopen(sprt->path().c_str(), "rb");
+		ifile = std::fopen(sprt->path().string().c_str(), "rb");
 		if (not ifile)
 			SM_EX_THROW(png_error, png_failed_to_open_for_reading, sprt->path());
 		std::fseek(ifile, sprt->png().pos, SEEK_SET);

@@ -8,7 +8,7 @@
 #include <png.h>
 
 #ifdef _WIN32 // for htonl
-#include <winsock.h>
+#include <winsock2.h>
 #else
 #include <arpa/inet.h>
 #endif

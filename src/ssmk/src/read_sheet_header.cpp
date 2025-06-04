@@ -15,7 +15,7 @@ void ssmk::read_sheet_header() {
 	std::memset(signature, 0, sigLen);
 
 	std::FILE* file = nullptr;
-	if (not (file = std::fopen(m_context.conf.file.c_str(), "rb")))
+	if (not (file = std::fopen(m_context.conf.file.string().c_str(), "rb")))
 		SM_EX_THROW(png_error, png_failed_to_open_for_reading, m_context.conf.file);
 
 	std::fread(signature, 1, sigLen, file);

@@ -1,5 +1,6 @@
 #include <cstdio>
 #include <random>
+#include <iostream>
 
 #include <png.h>
 
@@ -26,7 +27,13 @@ int main(int argc, char** argv) {
 			PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, 
 			PNG_FILTER_TYPE_DEFAULT
 		);
-		std::FILE* fp = std::fopen((std::string("pnggen_").append(std::to_string(i)).append(".png")).c_str(), "wb");
+		std::string path = std::string("pnggen_").append(std::to_string(i)).append(".png");
+		std::FILE* fp = std::fopen(path.c_str(), "wb");
+		if (not fp) {
+			std::cerr << "failed to open: " << path << std::endl;
+			break;
+		}
+		std::cout << "writing to " << path << ": " << width << "x" << height << "px" << std::endl;
 		png_bytepp rows = new png_bytep[height];
 		for (int i = 0; i < height; i++) {
 			rows[i] = new png_byte[width*3];
@@ -63,6 +70,8 @@ int main(int argc, char** argv) {
 		for (int i = 0; i < height; i++)
 			delete[] rows[i];
 		delete[] rows;
+
+		std::fclose(fp);
 	}
 	
 	return 0;

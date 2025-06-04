@@ -66,4 +66,10 @@ target_link_libraries(sm_ssmk
 	ca::optimization
 )
 
+if(WIN32)
+	target_link_libraries(sm_ssmk
+		ws2_32
+	)
+endif()
+
 add_subdirectory(tests)
