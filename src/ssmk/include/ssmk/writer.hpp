@@ -8,8 +8,6 @@
 #include <functional>
 #include <cstddef>
 #include <type_traits>
-#include <map>
-#include <string>
 
 #define CALLBACK(NAME, ...) \
 	private: \
@@ -129,19 +127,6 @@ public:
 	CALLBACK(png_written)
 
 public:
-	struct sheet_entry {
-		size_type x, y, width, height;
-	};
-	class sheet: public std::map<std::string, sheet_entry> {
-	protected:
-		size_type m_width, m_height;
-		int m_png_color, m_depth;
-		bool m_color_present, m_alpha_present; 
-		png_bytep* m_data;
-		png_structp m_png;
-		png_infop m_info;
-	};
-
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type make_sheet(P&& dir) {
 		read_config(std::forward<P>(dir));
@@ -152,54 +137,6 @@ public:
 		copy_sprites();
 		build_png_chunk();
 		write_png();
-	}
-
-	void read_sheet_header();
-	CALLBACK(
-		sheet_header_read
-	);
-
-	void extract_png_chunk();
-	CALLBACK(
-		chunk_entry_extracted,
-		size_type i
-	);
-	CALLBACK(
-		chunk_extracted,
-	);
-
-	void read_sheet_png_data();
-	CALLBACK(
-		image_row_read,
-		size_type row,
-		size_type pass,
-		size_type passes
-	)
-	CALLBACK(
-		image_read
-	)
-
-	/*
-	 * will use m_context.conf.file or find config file in
-	 * m_context.conf.directory and extract from it the output.file field and 
-	 * read the png and build the std::map<std::string, sprite>
-	*/
-	template<typename P> typename 
-	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_sheet(P&& path) {
-		m_context = context_type();
-		if (std::filesystem::is_regular_file(path))
-			m_context.conf.out.file = std::filesystem::absolute(path);
-		else 
-			read_config(std::forward<P>(path)); // will throw at any file error
-		read_sheet_header();
-		extract_png_chunk();
-		read_sheet_png_data();
-	}
-
-	/*
-	 * will write read sheet tree to specified directory
-	*/
-	void extract_sheet() {
 	}
 
 private:
