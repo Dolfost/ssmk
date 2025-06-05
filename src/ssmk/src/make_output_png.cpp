@@ -14,72 +14,72 @@
 namespace ssmk {
 
 void writer::make_output_png() {
-	context.im.color = 0;
+	cntx.im.color = 0;
 	// expand all to rgb if required
-	if (context.im.color_present)
-		context.im.color |= PNG_COLOR_MASK_COLOR;
-	if ((context.im.alpha_present or context.im.tRNS_present) and not 
-		context.out.png.opaque)
-		context.im.color |= PNG_COLOR_MASK_ALPHA;
+	if (cntx.im.color_present)
+		cntx.im.color |= PNG_COLOR_MASK_COLOR;
+	if ((cntx.im.alpha_present or cntx.im.tRNS_present) and not 
+		cntx.conf.out.png.opaque)
+		cntx.im.color |= PNG_COLOR_MASK_ALPHA;
 
 	int interlacing;
-	switch (context.out.png.inter) {
-		case context::output::png_info::interlacing::none:
+	switch (cntx.conf.out.png.inter) {
+		case context::config::output::png_info::interlacing::none:
 			interlacing = PNG_INTERLACE_NONE;
 			break;
-		case context::output::png_info::interlacing::adam7:
+		case context::config::output::png_info::interlacing::adam7:
 			interlacing = PNG_INTERLACE_ADAM7;
 			break;
 	}
 
-	context.im.png = png_create_write_struct(
+	cntx.im.png = png_create_write_struct(
 		PNG_LIBPNG_VER_STRING,
 		nullptr, nullptr, nullptr
 	);
 
-	if (not context.im.png) {
+	if (not cntx.im.png) {
 		SM_EX_THROW(error, png_could_not_create_write_structure);
 	}
 
-	context.im.info = png_create_info_struct(context.im.png);
-	if (not context.im.info) {
-		png_destroy_write_struct(&context.im.png, nullptr);
+	cntx.im.info = png_create_info_struct(cntx.im.png);
+	if (not cntx.im.info) {
+		png_destroy_write_struct(&cntx.im.png, nullptr);
 		SM_EX_THROW(error, png_could_not_create_info_structure);
 	}
 
 	png_set_IHDR(
-		context.im.png, context.im.info, context.im.width, context.im.height,
-		context.im.depth, context.im.color, interlacing,
+		cntx.im.png, cntx.im.info, cntx.im.width, cntx.im.height,
+		cntx.im.depth, cntx.im.color, interlacing,
 		PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT //  TODO: add filter setting to toml config
 	);
 
-	context.im.background = new png_color_16;
-	if (not context.im.background)
+	cntx.im.background = new png_color_16;
+	if (not cntx.im.background)
 		SM_EX_THROW(
 			png_error, 
 			png_could_not_allocate_background_color, 
-			context.out.file
+			cntx.conf.out.file
 		);
-	const int max = 1 << context.im.depth; // max pixel component value
-	if (context.im.color & PNG_COLOR_MASK_COLOR) { // if result is color image
-		context.im.background->red   = max * context.out.png.background[0];
-		context.im.background->green = max * context.out.png.background[1];
-		context.im.background->blue  = max * context.out.png.background[2];
+	const int max = 1 << cntx.im.depth; // max pixel component value
+	if (cntx.im.color & PNG_COLOR_MASK_COLOR) { // if result is color image
+		cntx.im.background->red   = max * cntx.conf.out.png.background[0];
+		cntx.im.background->green = max * cntx.conf.out.png.background[1];
+		cntx.im.background->blue  = max * cntx.conf.out.png.background[2];
 	} else { // if output will be grayscale, convert color to grayscale
-		context.im.background->gray = (
-			6968  * max * context.out.png.background[0] + 
-			23434 * max * context.out.png.background[1] + 
-			2366  * max * context.out.png.background[2]
+		cntx.im.background->gray = (
+			6968  * max * cntx.conf.out.png.background[0] + 
+			23434 * max * cntx.conf.out.png.background[1] + 
+			2366  * max * cntx.conf.out.png.background[2]
 		) / 32768;
 	}
-	if (not (context.im.color & PNG_COLOR_MASK_ALPHA)) // set background color only if output is transparent
+	if (not (cntx.im.color & PNG_COLOR_MASK_ALPHA)) // set background color only if output is transparent
 		png_set_bKGD(
-			context.im.png, context.im.info,
-			context.im.background
+			cntx.im.png, cntx.im.info,
+			cntx.im.background
 		);
 
 	png_set_compression_level(
-		context.im.png, context.out.png.compression
+		cntx.im.png, cntx.conf.out.png.compression
 	);
 
 	// put comments
@@ -95,27 +95,27 @@ void writer::make_output_png() {
 			(char*)ssmk::version.full.c_str() // sorry
 		}
 	};
-	png_set_text(context.im.png, context.im.info, text, 2);
+	png_set_text(cntx.im.png, cntx.im.info, text, 2);
 
 	// allocate result buffer
-	context.im.rows = new png_bytep[context.im.height];
-	png_bytepp& rows = context.im.rows;
+	cntx.im.rows = new png_bytep[cntx.im.height];
+	png_bytepp& rows = cntx.im.rows;
 	if (not rows) {
-		png_destroy_write_struct(&context.im.png, &context.im.info);
-		SM_EX_THROW(png_error, png_could_not_allocate_output_rows, context.out.file);
+		png_destroy_write_struct(&cntx.im.png, &cntx.im.info);
+		SM_EX_THROW(png_error, png_could_not_allocate_output_rows, cntx.conf.out.file);
 	}
-	const auto row_size = png_get_rowbytes(context.im.png, context.im.info);
-	for (std::size_t i = 0; i < context.im.height; i++) {
+	const auto row_size = png_get_rowbytes(cntx.im.png, cntx.im.info);
+	for (std::size_t i = 0; i < cntx.im.height; i++) {
 		rows[i] = new png_byte[row_size];
 		VALGRIND_MAKE_MEM_DEFINED(rows[i], row_size);
 		
 		if (not rows[i]) {
-			png_destroy_write_struct(&context.im.png, &context.im.info);
+			png_destroy_write_struct(&cntx.im.png, &cntx.im.info);
 			for (std::size_t j = 0; j < i; j++)
 				delete rows[j];
 			delete rows;
 			rows = nullptr;
-			SM_EX_THROW(png_error, png_could_not_allocate_output_rows, context.out.file);
+			SM_EX_THROW(png_error, png_could_not_allocate_output_rows, cntx.conf.out.file);
 		}
 	}
 

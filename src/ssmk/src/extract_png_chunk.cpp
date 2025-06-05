@@ -12,8 +12,8 @@ namespace ssmk {
 void writer::extract_png_chunk() {
 	png_unknown_chunkp chunks, chunk = nullptr;
 	int count = png_get_unknown_chunks(
-		context.im.png, 
-		context.im.info, 
+		cntx.im.png, 
+		cntx.im.info, 
 		&chunks
 	 );
 
@@ -25,7 +25,7 @@ void writer::extract_png_chunk() {
 	// );
 
 	if (chunk == nullptr)
-		SM_EX_THROW(png_error, png_no_ssmk_chunk, m_context.conf.file);
+		SM_EX_THROW(png_error, png_no_ssmk_chunk, m_context.file);
 
 }
 

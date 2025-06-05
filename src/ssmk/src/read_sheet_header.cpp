@@ -15,32 +15,32 @@ void writer::read_sheet_header() {
 	std::memset(signature, 0, sigLen);
 
 	std::FILE* file = nullptr;
-	if (not (file = std::fopen(m_context.conf.file.string().c_str(), "rb")))
-		SM_EX_THROW(png_error, png_failed_to_open_for_reading, m_context.conf.file);
+	if (not (file = std::fopen(m_context.file.string().c_str(), "rb")))
+		SM_EX_THROW(png_error, png_failed_to_open_for_reading, m_context.file);
 
 	std::fread(signature, 1, sigLen, file);
 	if (not png_check_sig(signature, 8)) {
 		std::fclose(file);
-		SM_EX_THROW(png_error, png_bad_signature, m_context.conf.file);
+		SM_EX_THROW(png_error, png_bad_signature, m_context.file);
 	}
 
-	context.im.png = png_create_read_struct(
+	cntx.im.png = png_create_read_struct(
 		PNG_LIBPNG_VER_STRING,
 		nullptr, nullptr, nullptr
 	);
 
-	if (not context.im.png) {
+	if (not cntx.im.png) {
 		SM_EX_THROW(error, png_could_not_create_read_structure);
 	}
 
-	context.im.info = png_create_info_struct(context.im.png);
-	if (not context.im.info) {
-		png_destroy_read_struct(&context.im.png, nullptr, nullptr);
+	cntx.im.info = png_create_info_struct(cntx.im.png);
+	if (not cntx.im.info) {
+		png_destroy_read_struct(&cntx.im.png, nullptr, nullptr);
 		SM_EX_THROW(error, png_could_not_create_info_structure);
 	}
 
 	png_set_keep_unknown_chunks(
-		context.im.png, 
+		cntx.im.png, 
 		PNG_HANDLE_CHUNK_ALWAYS, 
 		(const png_bytep)chunk_name, 
 		1
@@ -59,12 +59,12 @@ void writer::read_sheet_header() {
 	);
 
 	// or's current image with all input
-	context.im.color_present   = bool(color & PNG_COLOR_MASK_COLOR);
-	context.im.palette_present = bool(color & PNG_COLOR_MASK_PALETTE);
-	context.im.alpha_present   = bool(color & PNG_COLOR_MASK_ALPHA);
-	context.im.tRNS_present    = bool(png_get_valid(m_context.im.png, m_context.im.info, PNG_INFO_tRNS));
-	context.im.depth           = depth;
-	context.im.color           = color;
+	cntx.im.color_present   = bool(color & PNG_COLOR_MASK_COLOR);
+	cntx.im.palette_present = bool(color & PNG_COLOR_MASK_PALETTE);
+	cntx.im.alpha_present   = bool(color & PNG_COLOR_MASK_ALPHA);
+	cntx.im.tRNS_present    = bool(png_get_valid(m_context.im.png, m_context.im.info, PNG_INFO_tRNS));
+	cntx.im.depth           = depth;
+	cntx.im.color           = color;
 
 	if (m_sheet_header_read_callback)
 		m_sheet_header_read_callback(m_context);

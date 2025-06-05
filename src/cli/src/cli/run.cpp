@@ -17,7 +17,7 @@ int Application::run(int argc, const char** argv) {
 	int code = EXIT_SUCCESS;
 
 	a_ssmk.set_images_packed_callback([](const writer& sm) {
-		std::cout << "SSMK context (after packing):\n" << sm.context << std::endl;
+		std::cout << "SSMK context (after packing):\n" << sm.cntx << std::endl;
 	});
 
 	try {
@@ -33,7 +33,7 @@ int Application::run(int argc, const char** argv) {
 		code = EXIT_FAILURE;
 	}
 
-	std::cout << "SSMK context:\n" << a_ssmk.context << std::endl;
+	std::cout << "SSMK context:\n" << a_ssmk.cntx << std::endl;
 
 	return code;
 }

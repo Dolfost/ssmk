@@ -51,7 +51,7 @@ int Application::parse(int argc, const char** argv) {
 	setOptionsStrings();
 
 	a_context = ssmk::cli::Context();
-	a_ssmk.context = ssmk::context();
+	a_ssmk.cntx = ssmk::writer::context();
 
 	try {
 		a_app.parse(argc, argv);

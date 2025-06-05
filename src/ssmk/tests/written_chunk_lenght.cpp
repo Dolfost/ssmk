@@ -17,8 +17,8 @@ int main(int argc, char** argv) {
 		return ssmk::ex::code::bad;
 	}
 
-	std::cout << "chunks size: " << s.context.im.chunks_size << std::endl;
-	std::cout << "written " << s.context.im.chunks.size() << " chunks" << std::endl;
+	std::cout << "chunks size: " << s.cntx.im.chunks_size << std::endl;
+	std::cout << "written " << s.cntx.im.chunks.size() << " chunks" << std::endl;
 
 	return ssmk::ex::code::good;
 }

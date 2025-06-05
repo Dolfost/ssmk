@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	}
 
 	std::cout << "sprites:\n";
-	for (auto const& x : s.context.im.sprites) {
+	for (auto const& x : s.cntx.im.sprites) {
 		std::cout << '\t' << x << '\n';
 	}
 	

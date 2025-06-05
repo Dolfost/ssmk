@@ -1,5 +1,5 @@
-#ifndef _SSMK_WRITER_HPP_
-#define _SSMK_WRITER_HPP_
+#ifndef SSMK_WRITER_HPP
+#define SSMK_WRITER_HPP
 
 #include <ssmk/context.hpp>
 
@@ -29,19 +29,21 @@ namespace ssmk {
 
 class writer {
 public:
+	struct context: public ssmk::context {
+	};
+
+	using context_type = ssmk::writer::context;
 	using size_type = std::size_t;
-	using context_type = ssmk::context;
 
 public:
 	writer(const context_type& context = {}): m_context(context) {};
-
-	context_type& context = m_context;
+	context_type& cntx = m_context;
 
 public:
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_config(P&& dir) {
-		context.conf.directory = std::forward<P>(dir);
-		writer::fill_context(context);
+		cntx.directory = std::forward<P>(dir);
+		writer::fill_context(cntx);
 
 		if (m_config_read_callback)
 			m_config_read_callback(m_context);
@@ -171,9 +173,9 @@ public:
 	*/
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_sheet(P&& path) {
-		m_context = ssmk::context();
+		m_context = context_type();
 		if (std::filesystem::is_regular_file(path))
-			m_context.out.file = std::filesystem::absolute(path);
+			m_context.conf.out.file = std::filesystem::absolute(path);
 		else 
 			read_config(std::forward<P>(path)); // will throw at any file error
 		read_sheet_header();
@@ -203,4 +205,4 @@ private:
 
 }
 
-#endif // !_SSMK_WRITER_HPP_
+#endif // !SSMK_WRITER_HPP

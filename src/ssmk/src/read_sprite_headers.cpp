@@ -14,11 +14,11 @@ namespace ssmk {
 void writer::read_sprite_headers() {
 	static const size_type sigLen = 8;
 	png_byte signature[sigLen];
-	size_type spriteCount = context.im.sprites.size();
+	size_type spriteCount = cntx.im.sprites.size();
 
 	std::FILE* file = nullptr;
 	for (std::size_t i = 0; i < spriteCount; i++) {
-		sprite* const sprt = static_cast<sprite*>(context.im.sprites[i]);
+		sprite* const sprt = static_cast<sprite*>(cntx.im.sprites[i]);
 		png_structp& png  = sprt->png().image;
 		png_infop&   info = sprt->png().info;
 
@@ -60,11 +60,11 @@ void writer::read_sprite_headers() {
 		);
 
 		// or's current image with all input
-		context.im.color_present   += bool(color & PNG_COLOR_MASK_COLOR);
-		context.im.palette_present += bool(color & PNG_COLOR_MASK_PALETTE);
-		context.im.alpha_present   += bool(color & PNG_COLOR_MASK_ALPHA);
-		context.im.tRNS_present    += bool(png_get_valid(png, info, PNG_INFO_tRNS));
-		context.im.depth           =  std::max(context.im.depth, depth);
+		cntx.im.color_present   += bool(color & PNG_COLOR_MASK_COLOR);
+		cntx.im.palette_present += bool(color & PNG_COLOR_MASK_PALETTE);
+		cntx.im.alpha_present   += bool(color & PNG_COLOR_MASK_ALPHA);
+		cntx.im.tRNS_present    += bool(png_get_valid(png, info, PNG_INFO_tRNS));
+		cntx.im.depth           =  std::max(cntx.im.depth, depth);
 
 		sprt->setSize({width, height});
 		sprt->png().pos = std::ftell(file);

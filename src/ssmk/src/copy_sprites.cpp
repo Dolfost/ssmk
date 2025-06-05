@@ -13,17 +13,17 @@
 namespace ssmk {
 
 void writer::copy_sprites() {
-	const bool ocol  = context.im.color & PNG_COLOR_MASK_COLOR;
-	const bool oalph = context.im.color & PNG_COLOR_MASK_ALPHA;
-	const bool oplt  = context.im.color & PNG_COLOR_MASK_PALETTE;
+	const bool ocol  = cntx.im.color & PNG_COLOR_MASK_COLOR;
+	const bool oalph = cntx.im.color & PNG_COLOR_MASK_ALPHA;
+	const bool oplt  = cntx.im.color & PNG_COLOR_MASK_PALETTE;
 	
 	const std::size_t pixelSize = // some shifting magic :)
-		png_get_channels(context.im.png, context.im.info) << (context.im.depth >> 4);
+		png_get_channels(cntx.im.png, cntx.im.info) << (cntx.im.depth >> 4);
 
-	std::size_t spriteCount = context.im.sprites.size();
+	std::size_t spriteCount = cntx.im.sprites.size();
 	std::FILE* ifile = nullptr;
 	for (int i = 0; i < spriteCount; i++) {
-		sprite* const sprt = static_cast<sprite*>(context.im.sprites[i]);
+		sprite* const sprt = static_cast<sprite*>(cntx.im.sprites[i]);
 		png_infop&   info = sprt->png().info;
 		png_structp& png = sprt->png().image;
 
@@ -51,9 +51,9 @@ void writer::copy_sprites() {
 		// transform image to output type
 		if (ocol and not col)
 			png_set_gray_to_rgb(png);
-		if ((depth < 8 or plt) and context.im.depth == 8)
+		if ((depth < 8 or plt) and cntx.im.depth == 8)
 			png_set_expand(png);
-		else if (depth < 16 and context.im.depth == 16)
+		else if (depth < 16 and cntx.im.depth == 16)
 			png_set_expand_16(png);
 		if (oalph and not alph) {
 			if (tRNS)
@@ -62,7 +62,7 @@ void writer::copy_sprites() {
 				png_set_add_alpha(png, 0xFFFFFFFF, PNG_FILLER_AFTER);
 		} else if ((alph or tRNS) and not oalph) {
 			png_set_background(
-				png, (png_color_16p)context.im.background, 
+				png, (png_color_16p)cntx.im.background, 
 				PNG_BACKGROUND_GAMMA_SCREEN, 0, 1
 			);
 		}
@@ -71,7 +71,7 @@ void writer::copy_sprites() {
 
 		png_read_update_info(png, info);
 
-		png_bytepp rows = (png_bytepp)context.im.rows;
+		png_bytepp rows = (png_bytepp)cntx.im.rows;
 		if (m_sprite_row_copied_callback) {
 			for (std::size_t p = 0; p < passes; p++)
 				for (std::size_t r = 0; r < sprt->size().height(); r++) {

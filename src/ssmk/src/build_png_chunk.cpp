@@ -26,7 +26,7 @@ void writer::build_png_chunk() {
 		paths.push_back(
 			std::filesystem::path(
 				static_cast<sprite*>(p)->path().lexically_relative(
-					m_context.conf.directory
+					m_context.directory
 				)
 			).replace_extension("").generic_string()
 		);

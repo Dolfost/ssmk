@@ -11,34 +11,34 @@
 
 namespace ssmk {
 
-const std::unordered_map<std::string, context::output::packing::algorithm> 
-	context::output::packing::algorithm_text {
-	{ "firstFit", context::output::packing::algorithm::first_fit },
-	{ "nextFit",  context::output::packing::algorithm::next_fit },
-	{ "treeFit",  context::output::packing::algorithm::tree_fit },
+const std::unordered_map<std::string, context::config::output::packing::algorithm> 
+	context::config::output::packing::algorithm_text {
+	{ "firstFit", context::config::output::packing::algorithm::first_fit },
+	{ "nextFit",  context::config::output::packing::algorithm::next_fit },
+	{ "treeFit",  context::config::output::packing::algorithm::tree_fit },
 };
 
-const std::unordered_map<std::string, context::output::packing::ordering> 
-	context::output::packing::order_text {
-	{ "none",       context::output::packing::ordering::none },
-	{ "decreasing", context::output::packing::ordering::decreasing },
-	{ "increasing", context::output::packing::ordering::increasing },
+const std::unordered_map<std::string, context::config::output::packing::ordering> 
+	context::config::output::packing::order_text {
+	{ "none",       context::config::output::packing::ordering::none },
+	{ "decreasing", context::config::output::packing::ordering::decreasing },
+	{ "increasing", context::config::output::packing::ordering::increasing },
 };
 
-const std::unordered_map<std::string, context::output::packing::sorting_metric> 
-	context::output::packing::metric_text {
-	{ "width",     context::output::packing::sorting_metric::width },
-	{ "height",    context::output::packing::sorting_metric::height },
-	{ "maxSide",   context::output::packing::sorting_metric::max_side },
-	{ "minSide",   context::output::packing::sorting_metric::min_side },
-	{ "perimeter", context::output::packing::sorting_metric::perimeter },
-	{ "area",      context::output::packing::sorting_metric::area },
+const std::unordered_map<std::string, context::config::output::packing::sorting_metric> 
+	context::config::output::packing::metric_text {
+	{ "width",     context::config::output::packing::sorting_metric::width },
+	{ "height",    context::config::output::packing::sorting_metric::height },
+	{ "maxSide",   context::config::output::packing::sorting_metric::max_side },
+	{ "minSide",   context::config::output::packing::sorting_metric::min_side },
+	{ "perimeter", context::config::output::packing::sorting_metric::perimeter },
+	{ "area",      context::config::output::packing::sorting_metric::area },
 };
 
-const std::unordered_map<std::string, context::output::png_info::interlacing> 
-	context::output::png_info::interlacing_text {
-	{ "none",     context::output::png_info::interlacing::none },
-	{ "adam7",     context::output::png_info::interlacing::adam7 },
+const std::unordered_map<std::string, context::config::output::png_info::interlacing> 
+	context::config::output::png_info::interlacing_text {
+	{ "none",     context::config::output::png_info::interlacing::none },
+	{ "adam7",     context::config::output::png_info::interlacing::adam7 },
 };
 
 context::intermediate::~intermediate() {
@@ -61,20 +61,18 @@ for (const auto& r : c.PROP) { \
 }
 
 std::ostream& operator<<(std::ostream& os, const context& c) {
-	SV(in.files);
+	S(directory);
+	S(conf.out.file);
 
-	S(conf.directory);
-	S(out.file);
+	SE(conf.out.pack.alg);
+	SE(conf.out.pack.order);
+	SE(conf.out.pack.metric);
+	S(conf.out.pack.k);
+	SE(conf.out.png.inter);
+	S(conf.out.png.opaque);
+	SV(conf.out.png.background);
 
-	SE(out.pack.alg);
-	SE(out.pack.order);
-	SE(out.pack.metric);
-	S(out.pack.k);
-	SE(out.png.inter);
-	S(out.png.opaque);
-	SV(out.png.background);
-
-	S(conf.file);
+	S(file);
 
 	os << "im.sprites" ": \n";
 	for (const auto& r : c.im.sprites) {

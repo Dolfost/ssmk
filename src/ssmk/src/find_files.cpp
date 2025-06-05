@@ -10,16 +10,16 @@ namespace ssmk {
 #define SSMK_ADD_SPRITE(P) \
 	sprite* sprt = new sprite;  \
 	sprt->set_path(P);  \
-	context.im.sprites.push_back(sprt);  \
+	m_context.im.sprites.push_back(sprt);  \
 	if (m_file_found_callback)  \
 		m_file_found_callback(m_context); \
 
 void writer::find_files() {
-	for (auto ptr: context.im.sprites) {
+	for (auto ptr: cntx.im.sprites) {
 		delete static_cast<sprite*>(ptr);
 	}
-	context.im.sprites.clear();
-	for (const auto& in: context.in.files) {
+	cntx.im.sprites.clear();
+	for (const auto& in: cntx.conf.in.files) {
 		if (std::filesystem::is_directory(in)) {
 			for (const auto& entry: std::filesystem::recursive_directory_iterator(in)) {
 				if (entry.is_regular_file() and entry.path().extension() == ".png") {
@@ -30,7 +30,7 @@ void writer::find_files() {
 			SSMK_ADD_SPRITE(in)
 		}
 	}
-	if (context.im.sprites.empty())
+	if (cntx.im.sprites.empty())
 		SM_EX_THROW(error, no_sprites_found)
 	if (m_files_found_callback)
 		m_files_found_callback(m_context);

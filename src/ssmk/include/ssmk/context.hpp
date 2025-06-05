@@ -21,54 +21,52 @@ class Box2D;
 namespace ssmk {
 
 struct context {
+	std::filesystem::path directory;
+	std::filesystem::path file;
 	struct config {
-		std::filesystem::path directory;
-		std::filesystem::path file;
+		struct input {
+			std::vector<std::filesystem::path> files;
+		} in;
+		struct output { 
+			std::filesystem::path file;
+			struct packing {
+				enum class algorithm {
+					none,
+					first_fit,
+					next_fit,
+					tree_fit,
+				} alg = algorithm::tree_fit;
+				const static std::unordered_map<std::string, algorithm> algorithm_text;
+				enum class ordering {
+					none,
+					decreasing,
+					increasing
+				} order = ordering::decreasing;
+				const static std::unordered_map<std::string, ordering> order_text;
+				enum class sorting_metric {
+					none,
+					width,
+					height,
+					max_side,
+					min_side,
+					perimeter,
+					area,
+				} metric = sorting_metric::min_side;
+				const static std::unordered_map<std::string, sorting_metric> metric_text;
+				std::size_t k = 1;
+			} pack;
+			struct png_info {
+				bool opaque = false;
+				enum class interlacing {
+					none, 
+					adam7,
+				} inter = interlacing::none;
+				const static std::unordered_map<std::string, interlacing> interlacing_text;
+				std::array<double, 3> background = {0, 0, 0};
+				int compression = -1;
+			} png;
+		} out;
 	} conf;
-
-	struct input {
-		std::vector<std::filesystem::path> files;
-	} in;
-
-	struct output {
-		std::filesystem::path file;
-		struct packing {
-			enum class algorithm {
-				none,
-				first_fit,
-				next_fit,
-				tree_fit,
-			} alg = algorithm::tree_fit;
-			const static std::unordered_map<std::string, algorithm> algorithm_text;
-			enum class ordering {
-				none,
-				decreasing,
-				increasing
-			} order = ordering::decreasing;
-			const static std::unordered_map<std::string, ordering> order_text;
-			enum class sorting_metric {
-				none,
-				width,
-				height,
-				max_side,
-				min_side,
-				perimeter,
-				area,
-			} metric = sorting_metric::min_side;
-			const static std::unordered_map<std::string, sorting_metric> metric_text;
-			std::size_t k = 1;
-		} pack;
-		struct png_info {
-			bool opaque = false;
-			enum class interlacing {
-				none, 
-				adam7,
-			} inter = interlacing::none;
-			const static std::unordered_map<std::string, interlacing> interlacing_text;
-			std::array<double, 3> background = {0, 0, 0};
-			int compression = -1;
-		} png;
-	} out;
 
 	struct intermediate {
 		std::vector<ca::opt::Box2D<std::size_t>*> sprites;

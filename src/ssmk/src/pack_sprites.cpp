@@ -5,13 +5,13 @@
 
 namespace ssmk {
 
-using Algorithm = context::output::packing::algorithm;
-using Order = context::output::packing::ordering;
-using Metric = context::output::packing::sorting_metric;
+using Algorithm = context::config::output::packing::algorithm;
+using Order = context::config::output::packing::ordering;
+using Metric = context::config::output::packing::sorting_metric;
 
 void writer::pack_sprites() {
 	std::function<bool(const std::size_t&, const std::size_t&)> order;
-	switch (context.out.pack.order) {
+	switch (cntx.conf.out.pack.order) {
 		case Order::decreasing:
 			order = std::greater<const std::size_t&>();
 			break;
@@ -23,7 +23,7 @@ void writer::pack_sprites() {
 
 	std::function<std::size_t(const ca::opt::Box2D<std::size_t>* box)> metric;
 	if (order) 
-		switch (context.out.pack.metric) {
+		switch (cntx.conf.out.pack.metric) {
 			case Metric::perimeter:
 				metric = [](auto box) { return box->perimeter(); };
 				break;
@@ -47,7 +47,7 @@ void writer::pack_sprites() {
 		}
 
 	ca::opt::Packing2D<std::size_t>* packing;
-	switch (context.out.pack.alg) {
+	switch (cntx.conf.out.pack.alg) {
 		case Algorithm::tree_fit: {
 			packing = new ca::opt::TreeFit2D<std::size_t>; 
 			break; }
@@ -56,7 +56,7 @@ void writer::pack_sprites() {
 			break; }
 		case Algorithm::next_fit: {
 			auto p = new ca::opt::NextFit2D<std::size_t>; 
-			p->setK(context.out.pack.k);
+			p->setK(cntx.conf.out.pack.k);
 			packing = p;
 			break; }
 		case Algorithm::none: 
@@ -80,9 +80,9 @@ void writer::pack_sprites() {
 			}
 		);
 
-	packing->pack(context.im.sprites);
-	context.im.width = packing->size().width();
-	context.im.height = packing->size().height();
+	packing->pack(cntx.im.sprites);
+	cntx.im.width = packing->size().width();
+	cntx.im.height = packing->size().height();
 
 	delete packing;
 
