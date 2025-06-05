@@ -42,7 +42,7 @@ void writer::read_sheet_header() {
 	png_set_keep_unknown_chunks(
 		cntx.im.png, 
 		PNG_HANDLE_CHUNK_ALWAYS, 
-		(const png_bytep)chunk_name, 
+		(const png_bytep)context::png_chunk::name, 
 		1
 	);
 

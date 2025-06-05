@@ -20,10 +20,21 @@ class Box2D;
 
 namespace ssmk {
 
+struct traits {
+	using size_type = std::size_t;
+	struct png {
+		using number_type = std::uint32_t;
+		using byte_type = std::uint8_t;
+	};
+};
+
 struct context {
 	std::filesystem::path directory;
 	std::filesystem::path file;
 	struct config {
+		constexpr static const std::array config_filenames = {
+			"ssmk.toml", "sprite.toml", "spritesheet.toml"
+		};
 		struct input {
 			std::vector<std::filesystem::path> files;
 		} in;
@@ -53,7 +64,7 @@ struct context {
 					area,
 				} metric = sorting_metric::min_side;
 				const static std::unordered_map<std::string, sorting_metric> metric_text;
-				std::size_t k = 1;
+				traits::size_type k = 1;
 			} pack;
 			struct png_info {
 				bool opaque = false;
@@ -68,30 +79,16 @@ struct context {
 		} out;
 	} conf;
 
-	struct intermediate {
-		std::vector<ca::opt::Box2D<std::size_t>*> sprites;
-
-		std::size_t color_present   = 0;
-		std::size_t alpha_present   = 0;
-		std::size_t palette_present = 0;
-		std::size_t tRNS_present    = 0;
-		static const std::size_t max_chunk_size = 80;
-		std::vector<std::vector<std::uint8_t>> chunks;
-		std::vector<std::size_t> chunks_entry_count;
-
-		std::size_t width, height; ///< Output dimentions
-		png_structp png = nullptr;  ///< Output png data structure
-		png_infop info = nullptr; ///< Output png info structure
-		png_color_16p background = nullptr; ///< Output png background structure
-		png_bytepp rows = nullptr; ///< Output buffer
-		int color = 0; ///< Output color mode
-		int depth = 0; ///< Output color depth
-		std::vector<png_unknown_chunk> png_chunks;
-		std::uint32_t chunks_size = 0;
-		~intermediate();
-	} im;
-
+	struct png_chunk {
+		constexpr static const char* name = "ssMk";
+		constexpr static const char* key = "Software";
+		constexpr static const char* version_key = "ssmk Version";
+		constexpr static const char* text = "ssmk";
+	};
 	friend std::ostream& operator<<(std::ostream& os, const context& c);
+};
+
+class sm_base {
 };
 
 }

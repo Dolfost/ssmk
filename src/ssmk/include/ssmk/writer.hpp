@@ -27,9 +27,37 @@
 
 namespace ssmk {
 
-class writer {
+class writer: public sm_base {
 public:
 	struct context: public ssmk::context {
+		struct intermediate {
+			std::vector<ca::opt::Box2D<traits::size_type>*> sprites;
+
+			traits::size_type color_present;
+			traits::size_type alpha_present;
+			traits::size_type palette_present;
+			traits::size_type tRNS_present;
+			static const traits::size_type max_chunk_size = 80;
+			std::vector<std::vector<traits::png::byte_type>> chunks;
+			std::vector<traits::size_type> chunks_entry_count;
+
+			traits::size_type width, height; ///< Output dimentions
+			png_structp png;  ///< Output png data structure
+			png_infop info; ///< Output png info structure
+			png_color_16p background; ///< Output png background structure
+			png_bytepp rows; ///< Output buffer
+			int color; ///< Output color mode
+			int depth; ///< Output color depth
+			std::vector<png_unknown_chunk> png_chunks;
+			traits::size_type chunks_size;
+			~intermediate();
+			intermediate() {
+				color_present = 0; alpha_present = 0; palette_present = 0; 
+				tRNS_present = 0; width = 0; height = 0; background = nullptr;
+				rows = nullptr; color = 0; depth = 0;
+			}
+		} im;
+		friend std::ostream& operator<<(std::ostream& os, const writer::context& c);
 	};
 
 	using context_type = ssmk::writer::context;
@@ -190,12 +218,6 @@ public:
 	}
 
 	static void fill_context(ssmk::context& context);
-
-public:
-	constexpr static const std::array config_filenames = {
-		"ssmk.toml", "sprite.toml", "spritesheet.toml"
-	};
-	constexpr static const char* chunk_name = "ssMK";
 
 private:
 	context_type m_context;

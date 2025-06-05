@@ -86,12 +86,12 @@ void writer::make_output_png() {
 	png_text text[2] { 
 		{
 			PNG_TEXT_COMPRESSION_NONE,
-			(char*)version.png.key,     // sorry
-			(char*)ssmk::version.png.text // sorry
+			(char*)context::png_chunk::key,     // sorry
+			(char*)context::png_chunk::text // sorry
 		},
 		{
 			PNG_TEXT_COMPRESSION_NONE,
-			(char*)version.png.versionKey,  // sorry
+			(char*)context::png_chunk::version_key,  // sorry
 			(char*)ssmk::version.full.c_str() // sorry
 		}
 	};

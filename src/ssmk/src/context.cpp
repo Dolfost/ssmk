@@ -1,5 +1,5 @@
 #include <iostream>
-#include <ssmk/context.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/sprite.hpp>
 
@@ -41,7 +41,7 @@ const std::unordered_map<std::string, context::config::output::png_info::interla
 	{ "adam7",     context::config::output::png_info::interlacing::adam7 },
 };
 
-context::intermediate::~intermediate() {
+writer::context::intermediate::~intermediate() {
 	//  TODO: fix memory dealocation
 	for (auto ptr: sprites)
 		delete static_cast<sprite*>(ptr);
@@ -73,6 +73,12 @@ std::ostream& operator<<(std::ostream& os, const context& c) {
 	SV(conf.out.png.background);
 
 	S(file);
+
+	return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const writer::context& c) {
+	operator<<(os, static_cast<const context&>(c));
 
 	os << "im.sprites" ": \n";
 	for (const auto& r : c.im.sprites) {

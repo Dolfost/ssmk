@@ -29,7 +29,7 @@ void writer::fill_context(ssmk::context& context) {
 	if (not std::filesystem::is_directory(context.directory))
 		SM_EX_THROW(file_error, source_directory_not_found, context.directory)
 
-	for (const auto& filename: config_filenames) {
+	for (const auto& filename: context::config::config_filenames) {
 		if (std::filesystem::is_regular_file(context.directory / filename)) {
 			context.file = context.directory / filename;
 			break;

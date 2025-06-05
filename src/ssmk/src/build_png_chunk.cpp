@@ -81,7 +81,7 @@ void writer::build_png_chunk() {
 	m_context.im.png_chunks.clear();
 	m_context.im.png_chunks.resize(m_context.im.chunks.size());
 	for (std::size_t i = 0; i < m_context.im.png_chunks.size(); i++) {
-		std::memcpy(m_context.im.png_chunks[i].name, chunk_name, 5);
+		std::memcpy(m_context.im.png_chunks[i].name, context::png_chunk::name, 5);
 		m_context.im.png_chunks[i].data = (png_bytep)m_context.im.chunks[i].data();
 		m_context.im.png_chunks[i].size = m_context.im.chunks[i].size();
 		m_context.im.png_chunks[i].location = PNG_HAVE_PLTE; // write chunk before IDAT
@@ -94,7 +94,7 @@ void writer::build_png_chunk() {
 	png_set_keep_unknown_chunks(
 		(png_structp)m_context.im.png, 
 		PNG_HANDLE_CHUNK_ALWAYS, 
-		(png_bytep)chunk_name, 1
+		(png_bytep)context::png_chunk::name, 1
 	);
 
 	if (m_png_chunk_built_callback) 
