@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/exceptions.hpp>
 
@@ -7,9 +7,9 @@
 
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::read_sheet_header() {
+void writer::read_sheet_header() {
 	static const std::size_t sigLen = 8;
 	png_byte signature[sigLen];
 	std::memset(signature, 0, sigLen);

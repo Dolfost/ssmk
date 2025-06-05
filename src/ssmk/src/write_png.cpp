@@ -1,12 +1,12 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 #include <ssmk/version.hpp>
 
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::write_png() {
+void writer::write_png() {
 	std::FILE* ofile = 
 		std::fopen(context.out.file.string().c_str(), "wb");
 	if (not ofile)

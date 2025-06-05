@@ -2,7 +2,7 @@
   
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
 sprite::png_info::~png_info() {
 	png_destroy_read_struct(

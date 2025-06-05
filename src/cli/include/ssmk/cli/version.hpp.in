@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace sm::cli {
+namespace ssmk::cli {
 
 struct {
 	const std::string full = "@ssmk-cli_VERSION@";

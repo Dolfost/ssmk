@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace sm::cli {
+namespace ssmk::cli {
 
 Application::Application(std::string name): a_name(name) {
 	setOptions();

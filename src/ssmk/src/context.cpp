@@ -9,7 +9,7 @@
 
 #include <ostream>
 
-namespace sm {
+namespace ssmk {
 
 const std::unordered_map<std::string, context::output::packing::algorithm> 
 	context::output::packing::algorithm_text {

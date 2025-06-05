@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 #include <filesystem>
@@ -6,10 +6,10 @@
 
 #include <toml++/toml.hpp>
 
-namespace sm {
+namespace ssmk {
 
 #define RETHROW_TOML_EX() \
-throw sm::ex::toml_error( \
+throw ssmk::ex::toml_error( \
 	context.conf.file, \
 	{ ex.source().begin.line, ex.source().begin.column }, \
 	{ ex.source().begin.line, ex.source().begin.column }, \
@@ -17,13 +17,13 @@ throw sm::ex::toml_error( \
 );
 
 #define THROW_TOML(E, OBJ) \
-throw sm::ex::E( \
+throw ssmk::ex::E( \
 	*OBJ->source().path, \
 	{ OBJ->source().begin.line, OBJ->source().begin.column }, \
 	{ OBJ->source().begin.line, OBJ->source().begin.column } \
 );
 
-void ssmk::fill_context(sm::context& context) {
+void writer::fill_context(ssmk::context& context) {
 	context.conf.directory = 
 		std::filesystem::absolute(context.conf.directory);
 	if (not std::filesystem::is_directory(context.conf.directory))

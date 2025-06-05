@@ -1,16 +1,16 @@
 #include <iostream>
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 int main(int argc, char** argv) {
-	sm::ssmk s;
+	ssmk::writer s;
 	try {
 		s.read_config(TESTPATH "/projects/tree_fit_increasing_packing");
-	} catch (sm::ex::config_exclusive_field_values& ex) {
-		return ex.code() == sm::ex::code::config_increasing_tree_fit_packing ? sm::ex::code::good : sm::ex::code::bad;
+	} catch (ssmk::ex::config_exclusive_field_values& ex) {
+		return ex.code() == ssmk::ex::code::config_increasing_tree_fit_packing ? ssmk::ex::code::good : ssmk::ex::code::bad;
 	}
 
 	std::cout << "General";
 
-	return sm::ex::code::bad;
+	return ssmk::ex::code::bad;
 }

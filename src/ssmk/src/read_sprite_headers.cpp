@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/sprite.hpp>
 #include <ssmk/exceptions.hpp>
 
@@ -9,9 +9,9 @@
 
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::read_sprite_headers() {
+void writer::read_sprite_headers() {
 	static const size_type sigLen = 8;
 	png_byte signature[sigLen];
 	size_type spriteCount = context.im.sprites.size();

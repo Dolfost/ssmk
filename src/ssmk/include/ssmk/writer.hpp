@@ -1,5 +1,5 @@
-#ifndef _SSMK_SSMK_HPP_
-#define _SSMK_SSMK_HPP_
+#ifndef _SSMK_WRITER_HPP_
+#define _SSMK_WRITER_HPP_
 
 #include <ssmk/context.hpp>
 
@@ -25,15 +25,15 @@
 			return m_##NAME##_callback; \
 		}
 
-namespace sm {
+namespace ssmk {
 
-class ssmk {
+class writer {
 public:
 	using size_type = std::size_t;
-	using context_type = sm::context;
+	using context_type = ssmk::context;
 
 public:
-	ssmk(const context_type& context = {}): m_context(context) {};
+	writer(const context_type& context = {}): m_context(context) {};
 
 	context_type& context = m_context;
 
@@ -41,7 +41,7 @@ public:
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_config(P&& dir) {
 		context.conf.directory = std::forward<P>(dir);
-		ssmk::fill_context(context);
+		writer::fill_context(context);
 
 		if (m_config_read_callback)
 			m_config_read_callback(m_context);
@@ -171,7 +171,7 @@ public:
 	*/
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_sheet(P&& path) {
-		m_context = sm::context();
+		m_context = ssmk::context();
 		if (std::filesystem::is_regular_file(path))
 			m_context.out.file = std::filesystem::absolute(path);
 		else 
@@ -187,7 +187,7 @@ public:
 	void extract_sheet() {
 	}
 
-	static void fill_context(sm::context& context);
+	static void fill_context(ssmk::context& context);
 
 public:
 	constexpr static const std::array config_filenames = {
@@ -203,4 +203,4 @@ private:
 
 }
 
-#endif // !_SSMK_SSMK_HPP_
+#endif // !_SSMK_WRITER_HPP_

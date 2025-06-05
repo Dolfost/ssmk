@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/sprite.hpp>
 #include <ssmk/exceptions.hpp>
@@ -10,9 +10,9 @@
 #include <zlib.h>
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::copy_sprites() {
+void writer::copy_sprites() {
 	const bool ocol  = context.im.color & PNG_COLOR_MASK_COLOR;
 	const bool oalph = context.im.color & PNG_COLOR_MASK_ALPHA;
 	const bool oplt  = context.im.color & PNG_COLOR_MASK_PALETTE;

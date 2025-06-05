@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/exceptions.hpp>
 
@@ -7,9 +7,9 @@
 #include <algorithm>
 #include <cstring>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::extract_png_chunk() {
+void writer::extract_png_chunk() {
 	png_unknown_chunkp chunks, chunk = nullptr;
 	int count = png_get_unknown_chunks(
 		context.im.png, 

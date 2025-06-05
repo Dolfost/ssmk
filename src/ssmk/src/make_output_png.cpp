@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 #include <ssmk/version.hpp>
 
@@ -11,9 +11,9 @@
 
 #include <png.h>
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::make_output_png() {
+void writer::make_output_png() {
 	context.im.color = 0;
 	// expand all to rgb if required
 	if (context.im.color_present)
@@ -87,12 +87,12 @@ void ssmk::make_output_png() {
 		{
 			PNG_TEXT_COMPRESSION_NONE,
 			(char*)version.png.key,     // sorry
-			(char*)sm::version.png.text // sorry
+			(char*)ssmk::version.png.text // sorry
 		},
 		{
 			PNG_TEXT_COMPRESSION_NONE,
 			(char*)version.png.versionKey,  // sorry
-			(char*)sm::version.full.c_str() // sorry
+			(char*)ssmk::version.full.c_str() // sorry
 		}
 	};
 	png_set_text(context.im.png, context.im.info, text, 2);

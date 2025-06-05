@@ -8,12 +8,12 @@
 #include <unordered_map>
 
 #define SM_EX_THROW(EX, CODE, ...) \
-throw sm::ex::EX( \
+throw ssmk::ex::EX( \
 	__VA_ARGS__ __VA_OPT__(,) \
-	sm::ex::code::text.at(sm::ex::code::CODE), sm::ex::code::CODE \
+	ssmk::ex::code::text.at(ssmk::ex::code::CODE), ssmk::ex::code::CODE \
 );
 
-namespace sm::ex {
+namespace ssmk::ex {
 
 namespace code {
 enum type {

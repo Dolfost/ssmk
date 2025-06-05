@@ -1,4 +1,4 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/sprite.hpp>
 
@@ -13,9 +13,9 @@
 #include <arpa/inet.h>
 #endif
 
-namespace sm {
+namespace ssmk {
 
-void ssmk::build_png_chunk() {
+void writer::build_png_chunk() {
 	std::vector<std::string> paths;
 	paths.reserve(m_context.im.sprites.size());
 

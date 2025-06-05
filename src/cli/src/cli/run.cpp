@@ -1,11 +1,11 @@
 #include <ssmk/cli/application.hpp>
 
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 #include <cstdlib>
 
-namespace sm::cli {
+namespace ssmk::cli {
 
 int Application::run(int argc, const char** argv) {
 	int parseResult = parse(argc, argv);
@@ -16,16 +16,16 @@ int Application::run(int argc, const char** argv) {
 
 	int code = EXIT_SUCCESS;
 
-	a_ssmk.set_images_packed_callback([](const ssmk& sm) {
+	a_ssmk.set_images_packed_callback([](const writer& sm) {
 		std::cout << "SSMK context (after packing):\n" << sm.context << std::endl;
 	});
 
 	try {
 		a_ssmk.make_sheet(std::filesystem::absolute(context.sourceDirectory));
-	} catch (sm::ex::config_field_error& ex) {
+	} catch (ssmk::ex::config_field_error& ex) {
 		std::cerr << ex.what() << ": " << ex.description() << ": " << ex.field() << std::endl;
 		code = ex.code();
-	} catch (sm::ex::error& ex) {
+	} catch (ssmk::ex::error& ex) {
 		std::cerr << ex.what() << ": " << ex.description() << std::endl;
 		code = ex.code();
 	} catch (std::exception& ex) {

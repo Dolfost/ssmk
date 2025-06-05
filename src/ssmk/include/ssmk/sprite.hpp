@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <iosfwd>
 
-namespace sm {
+namespace ssmk {
 
 class sprite: public ca::opt::Box2D<std::size_t> {
 public:

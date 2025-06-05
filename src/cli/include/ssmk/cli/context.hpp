@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <ostream>
 	
-namespace sm::cli {
+namespace ssmk::cli {
 
 struct Context {
 

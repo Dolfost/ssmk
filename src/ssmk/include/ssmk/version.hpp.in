@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace sm {
+namespace ssmk {
 
 struct {
 	const std::string full = "@ssmk_VERSION@";

@@ -53,7 +53,8 @@ target_sources(sm_ssmk
 			"$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
 			"include"
 		FILES 
-			include/ssmk/ssmk.hpp
+			include/ssmk/writer.hpp
+			include/ssmk/reader.hpp
 			"${CMAKE_CURRENT_BINARY_DIR}/include/ssmk/version.hpp"
 			include/ssmk/context.hpp
 			include/ssmk/sprite.hpp

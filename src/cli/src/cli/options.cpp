@@ -5,7 +5,7 @@
 
 #include <ssmk/version.hpp>
 
-namespace sm::cli {
+namespace ssmk::cli {
 
 void Application::setOptions() {
 	a_app.option_defaults()
@@ -36,7 +36,7 @@ void Application::setOptions() {
 	a_app.set_help_flag("-h,--help", "Print this message and exit");
 	a_app.add_flag_callback(
 		"--ssmk-version",
-		[]() { throw CLI::CallForVersion(sm::version.full, EXIT_SUCCESS); },
+		[]() { throw CLI::CallForVersion(ssmk::version.full, EXIT_SUCCESS); },
 		"Display ssmk library version information and exit"
 	);
 }
@@ -50,8 +50,8 @@ void Application::setOptionsStrings() {
 int Application::parse(int argc, const char** argv) {
 	setOptionsStrings();
 
-	a_context = sm::cli::Context();
-	a_ssmk.context = sm::context();
+	a_context = ssmk::cli::Context();
+	a_ssmk.context = ssmk::context();
 
 	try {
 		a_app.parse(argc, argv);

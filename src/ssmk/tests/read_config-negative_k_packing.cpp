@@ -1,22 +1,22 @@
 #include <iostream>
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 int main(int argc, char** argv) {
-	sm::ssmk s;
+	ssmk::writer s;
 	try {
 		s.read_config(TESTPATH "/projects/negative_k_packing");
-	} catch (sm::ex::config_unexpected_field_value& ex) {
+	} catch (ssmk::ex::config_unexpected_field_value& ex) {
 		std::cout << ex.path() <<  ": " << ex.what() 
 			<< ": " << ex.description() << ": " << ex.field() 
 			<< " = " << ex.value() << ", expected " << ex.expected() << std::flush;
-		return sm::ex::code::good;
-	} catch (sm::ex::config_field_error& ex) {
+		return ssmk::ex::code::good;
+	} catch (ssmk::ex::config_field_error& ex) {
 		std::cout << ex.path() <<  ": " << ex.what() 
 			<< ": " << ex.description() << ": " << ex.field() << std::endl;
 	}
 
 	std::cout << "General";
 
-	return sm::ex::code::bad;
+	return ssmk::ex::code::bad;
 }

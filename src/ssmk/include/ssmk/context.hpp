@@ -18,7 +18,7 @@ class Box2D;
 
 }
 
-namespace sm {
+namespace ssmk {
 
 struct context {
 	struct config {

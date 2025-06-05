@@ -6,10 +6,10 @@
 #include <CLI/CLI.hpp>
 
 #include <ssmk/context.hpp>
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/cli/context.hpp>
 
-namespace sm::cli {
+namespace ssmk::cli {
 
 class Application {
 public:
@@ -24,7 +24,7 @@ public:
 		a_description = description; 
 	}
 
-	sm::cli::Context& context = a_context;
+	ssmk::cli::Context& context = a_context;
 
 public:
 	int run(int argc, const char** argv);
@@ -35,13 +35,13 @@ private:
 	void setOptionsStrings();
 
 private:
-	sm::cli::Context a_context;
+	ssmk::cli::Context a_context;
 	std::string a_name;
 	std::string a_description;
 	std::string a_version;
 
 private:
-	sm::ssmk a_ssmk;
+	ssmk::writer a_ssmk;
 
 private:
 	CLI::App a_app;

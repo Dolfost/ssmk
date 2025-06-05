@@ -1,11 +1,11 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 
 #include <ssmk/exceptions.hpp>
 #include <ssmk/sprite.hpp>
 
 #include <filesystem>
 
-namespace sm {
+namespace ssmk {
 
 #define SSMK_ADD_SPRITE(P) \
 	sprite* sprt = new sprite;  \
@@ -14,7 +14,7 @@ namespace sm {
 	if (m_file_found_callback)  \
 		m_file_found_callback(m_context); \
 
-void ssmk::find_files() {
+void writer::find_files() {
 	for (auto ptr: context.im.sprites) {
 		delete static_cast<sprite*>(ptr);
 	}

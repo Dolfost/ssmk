@@ -1,15 +1,15 @@
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 #include <calgo/opt/packing2D.hpp>
 
-namespace sm {
+namespace ssmk {
 
 using Algorithm = context::output::packing::algorithm;
 using Order = context::output::packing::ordering;
 using Metric = context::output::packing::sorting_metric;
 
-void ssmk::pack_sprites() {
+void writer::pack_sprites() {
 	std::function<bool(const std::size_t&, const std::size_t&)> order;
 	switch (context.out.pack.order) {
 		case Order::decreasing:

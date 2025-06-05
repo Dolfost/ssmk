@@ -1,15 +1,15 @@
 #include <iostream>
-#include <ssmk/ssmk.hpp>
+#include <ssmk/writer.hpp>
 #include <ssmk/exceptions.hpp>
 
 int main(int argc, char** argv) {
-	sm::ssmk s;
+	ssmk::writer s;
 	try {
 		s.read_config(TESTPATH);
-	} catch (sm::ex::file_error& ex) {
+	} catch (ssmk::ex::file_error& ex) {
 		std::cout << ex.what() << ": " << ex.description() << ": "  << ex.path() << std::endl;
-		return sm::ex::code::good;
+		return ssmk::ex::code::good;
 	}
 
-	return sm::ex::code::bad;
+	return ssmk::ex::code::bad;
 }
