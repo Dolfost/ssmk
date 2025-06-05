@@ -24,21 +24,24 @@ project(ssmk
 )
 
 add_library(sm_ssmk 
-	# make sheet
-	src/find_files.cpp
-	src/read_sprite_headers.cpp
-	src/pack_sprites.cpp
-	src/make_output_png.cpp
-	src/copy_sprites.cpp
-	src/build_png_chunk.cpp
-	src/write_png.cpp
-	# read sheet
-	src/read_sheet_header.cpp
-	src/extract_png_chunk.cpp
-	# miscellaneous
-	src/sprite.cpp
+	# Common
 	src/context.cpp
-	src/fill_context.cpp
+	src/read_config.cpp
+	src/sprite.cpp
+
+	# Writer
+	src/writer/find_files.cpp
+	src/writer/read_sprite_headers.cpp
+	src/writer/pack_sprites.cpp
+	src/writer/make_output_png.cpp
+	src/writer/copy_sprites.cpp
+	src/writer/build_png_chunk.cpp
+	src/writer/write_png.cpp
+	src/writer/context.cpp
+
+	# Reader
+	src/reader/read_sheet_header.cpp
+	src/reader/extract_png_chunk.cpp
 )
 add_library(sm::ssmk ALIAS sm_ssmk)
 

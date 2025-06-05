@@ -89,6 +89,9 @@ struct context {
 };
 
 class sm_base {
+public:
+	static void read_config(ssmk::context& context);
+	using context_type = context;
 };
 
 }

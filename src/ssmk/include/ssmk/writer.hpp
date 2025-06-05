@@ -70,40 +70,31 @@ public:
 public:
 	template<typename P> typename 
 	std::enable_if<std::is_assignable<std::filesystem::path, P>::value>::type read_config(P&& dir) {
-		cntx.directory = std::forward<P>(dir);
-		writer::fill_context(cntx);
+		this->cntx.directory = std::forward<P>(dir);
+		sm_base::read_config(static_cast<ssmk::context&>(cntx));
 
 		if (m_config_read_callback)
 			m_config_read_callback(m_context);
 	}
-
 	CALLBACK(config_read)
 
 	void find_files();
-	CALLBACK(
-		file_found
-	)
-	CALLBACK(
-		files_found
-	)
+	CALLBACK(file_found)
+	CALLBACK(files_found)
 
 	void read_sprite_headers();
 	CALLBACK(
 		image_header_read,
 		size_type image
 	)
-	CALLBACK(
-		image_headers_read,
-	)
+	CALLBACK(image_headers_read)
 
 	void pack_sprites();
 	CALLBACK(
 		image_packed,
 		size_type imageNo
 	)
-	CALLBACK(
-		images_packed
-	)
+	CALLBACK(images_packed)
 
 	void make_output_png();
 
@@ -112,9 +103,7 @@ public:
 		png_chunk_entry_written,
 		size_type sprite
 	)
-	CALLBACK(
-		png_chunk_built
-	)
+	CALLBACK(png_chunk_built)
 
 	void copy_sprites();
 	CALLBACK(
@@ -128,9 +117,7 @@ public:
 		sprite_copied,
 		size_type image
 	)
-	CALLBACK(
-		sprites_copied
-	)
+	CALLBACK(sprites_copied)
 
 	void write_png();
 	CALLBACK(
@@ -139,9 +126,7 @@ public:
 		size_type pass,
 		size_type passes
 	)
-	CALLBACK(
-		png_written
-	)
+	CALLBACK(png_written)
 
 public:
 	struct sheet_entry {
@@ -216,8 +201,6 @@ public:
 	*/
 	void extract_sheet() {
 	}
-
-	static void fill_context(ssmk::context& context);
 
 private:
 	context_type m_context;
